@@ -42,6 +42,7 @@ function getData() {
     arr.forEach(str => {
       var comment = document.createElement('p');
       comment.innerText = str;
+      dataContainer.appendChild(document.createElement('hr'));
       dataContainer.appendChild(comment);
     });
   });
