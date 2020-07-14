@@ -37,7 +37,12 @@ function addRandomGreeting() {
 }
 
 function getData() {
-  fetch('/data').then(response => response.text()).then(text => {
-    document.getElementById('data-container').innerText = text;
+  fetch('/data').then(response => response.json()).then(arr => {
+    const dataContainer = document.getElementById('data-container');
+    arr.forEach(str => {
+      var comment = document.createElement('p');
+      comment.innerText = str;
+      dataContainer.appendChild(comment);
+    });
   });
 }
