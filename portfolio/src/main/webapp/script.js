@@ -17,8 +17,12 @@
  */
 function addRandomGreeting() {
   const greetings =
-      ["Pop Pop!", "Leonard likes this post.", "I can't believe I spent ten bucks on this! I don't know any of these people!", "My name is Alex!",
-      "We're the only species on earth that observes shark week.", "TV's the best dad there is. TV never came home drunk, TV never forgot me at the zoo, TV never abused and insulted me... unless you count Cop Rock.",
+      ["Pop Pop!",
+      "Leonard likes this post.",
+      "I can't believe I spent ten bucks on this! I don't know any of these people!",
+      "My name is Alex!",
+      "We're the only species on earth that observes shark week.",
+      "TV's the best dad there is. TV never came home drunk, TV never forgot me at the zoo, TV never abused and insulted me... unless you count Cop Rock.",
       "The funny thing about being smart, is that you can get through most of life without ever having to do any work.",
       "I see your value now.",
       "Our first assignment is a documentary. The're like real movies, but with ugly people.",
@@ -34,4 +38,16 @@ function addRandomGreeting() {
   // Add it to the page.
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
+}
+
+function getData() {
+  fetch('/data').then(response => response.json()).then(arr => {
+    const dataContainer = document.getElementById('data-container');
+    arr.forEach(str => {
+      var comment = document.createElement('p');
+      comment.innerText = str;
+      dataContainer.appendChild(document.createElement('hr'));
+      dataContainer.appendChild(comment);
+    });
+  });
 }
