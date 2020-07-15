@@ -49,6 +49,7 @@ public class DataServlet extends HttpServlet {
       mComments.add((String) entity.getProperty("text"));
     }
     response.setContentType("application/json;");
+    response.setCharacterEncoding("UTF-8");
     response.getWriter().println(new Gson().toJson(mComments));
   }
 
