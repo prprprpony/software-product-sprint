@@ -50,4 +50,14 @@ function getData() {
       dataContainer.appendChild(comment);
     });
   });
+  fetch('/user').then(response => response.json()).then(userStatus => {
+    const userContainer = document.getElementById('user-container');
+    if (userStatus.isUserLoggedIn) {
+      userContainer.innerHTML = '<span style="float:left;">username: ' + userStatus.userEmail + '</span>'
+                                +'<span style="float:right;"><a href="' + userStatus.logoutUrl + '">logout</a></span>';
+    } else {
+      userContainer.innerHTML = '<span style="float:left;">username: None</span>'
+                                +'<span style="float:right;"><a href="' + userStatus.loginUrl + '">login</a></span>';
+    }
+  });
 }
