@@ -40,27 +40,28 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
-function getData() {
-  fetch('/data').then(response => response.json()).then(arr => {
-    const dataContainer = document.getElementById('data-container');
-    arr.forEach(str => {
-      var comment = document.createElement('p');
-      comment.innerText = str;
-      dataContainer.appendChild(document.createElement('hr'));
-      dataContainer.appendChild(comment);
+function initPage() {
+    fetch('/data').then(response => response.json()).then(arr => {
+        const dataContainer = document.getElementById('data-container');
+        arr.forEach(str => {
+            var comment = document.createElement('p');
+            comment.innerText = str;
+            dataContainer.appendChild(document.createElement('hr'));
+            dataContainer.appendChild(comment);
+        });
     });
-  });
-  fetch('/user').then(response => response.json()).then(userStatus => {
-    const userContainer = document.getElementById('user-container');
-    if (userStatus.isUserLoggedIn) {
-      userContainer.innerHTML = '<span style="float:left;">username: ' + userStatus.userEmail + '</span>'
-                                +'<span style="float:right;"><a href="' + userStatus.logoutUrl + '">logout</a></span>';
-    } else {
-      userContainer.innerHTML = '<span style="float:left;">username: None</span>'
-                                +'<span style="float:right;"><a href="' + userStatus.loginUrl + '">login</a></span>';
+    fetch('/user').then(response => response.json()).then(userStatus => {
+        const userContainer = document.getElementById('user-container');
+        if (userStatus.isUserLoggedIn) {
+            userContainer.innerHTML = '<span style="float:left;">username: ' + userStatus.userEmail + '</span>'
+                + '<span style="float:right;"><a href="' + userStatus.logoutUrl + '">logout</a></span>';
+        }
+        else {
+            userContainer.innerHTML = '<span style="float:left;">username: None</span>'
+                + '<span style="float:right;"><a href="' + userStatus.loginUrl + '">login</a></span>';
+        }
+    });
+    if (window.location.search == '?login') {
+        alert("Pleas login to leave comments.");
     }
-  });
-  if (window.location.search == '?login') {
-    alert("Pleas login to leave comments.");
-  }
 }
