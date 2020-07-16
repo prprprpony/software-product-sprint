@@ -27,18 +27,16 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 
 /** Servlet that returns comments data.*/
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-  private DatastoreService mDatastore;
+  private DatastoreService mDatastore = DatastoreServiceFactory.getDatastoreService();
   private final ArrayList<String> mComments = new ArrayList<String>();;
-
-  @Override
-  public void init() {
-    mDatastore = DatastoreServiceFactory.getDatastoreService();
-  }
+  private final UserService mUserService = UserServiceFactory.getUserService();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -55,14 +53,20 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    if (!mUserService.isUserLoggedIn()) {
+      response.sendRedirect("/index.html?login");
+      return;
+    }
     final String text = getParameter(request, "text-input", "");
     final long timestamp = System.currentTimeMillis();
+    final String userEmail = mUserService.getCurrentUser().getEmail();
 
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("text", text);
     commentEntity.setProperty("timestamp", timestamp);
-    mDatastore.put(commentEntity);
+    commentEntity.setProperty("userEmail", userEmail);
 
+    mDatastore.put(commentEntity);
     response.sendRedirect("/index.html");
   }
 

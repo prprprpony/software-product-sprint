@@ -60,4 +60,7 @@ function getData() {
                                 +'<span style="float:right;"><a href="' + userStatus.loginUrl + '">login</a></span>';
     }
   });
+  if (window.location.search == '?login') {
+    alert("Pleas login to leave comments.");
+  }
 }
