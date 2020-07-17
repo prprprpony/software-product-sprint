@@ -27,16 +27,16 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns user info.*/
 @WebServlet("/user")
 public class UserServlet extends HttpServlet {
-  private class UserStatus { 
-    public boolean isUserLoggedIn;
-    public String userEmail;
-    public String logoutUrl;
-    public String loginUrl;
-    public UserStatus() {
-        isUserLoggedIn = false;
-        userEmail = null;
-        loginUrl = null;
-        logoutUrl = null;
+  private final static class UserStatus { 
+    private boolean isUserLoggedIn;
+    private String userEmail;
+    private String logoutUrl;
+    private String loginUrl;
+    public UserStatus(boolean isUserLoggedIn, String userEmail, String logoutUrl, String loginUrl) {
+        this.isUserLoggedIn = isUserLoggedIn;
+        this.userEmail = userEmail;
+        this.logoutUrl = logoutUrl;
+        this.loginUrl = loginUrl;
     }
   }
 
@@ -44,19 +44,12 @@ public class UserServlet extends HttpServlet {
   private UserStatus mUserStatus;
 
   @Override
-  public void init() {
-    mUserStatus = new UserStatus();
-  }
-  
-  @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("application/json;");
-    mUserStatus.isUserLoggedIn = mUserService.isUserLoggedIn();
-    if (mUserStatus.isUserLoggedIn) {
-      mUserStatus.userEmail = mUserService.getCurrentUser().getEmail();
-      mUserStatus.logoutUrl = mUserService.createLogoutURL("/");
+    if (mUserService.isUserLoggedIn()) {
+      mUserStatus = new UserStatus(true, mUserService.getCurrentUser().getEmail(), mUserService.createLogoutURL("/"), null);
     } else {
-      mUserStatus.loginUrl = mUserService.createLoginURL("/");
+      mUserStatus = new UserStatus(false, null, null, mUserService.createLoginURL("/"));
     }
     response.setContentType("application/json;");
     response.setCharacterEncoding("UTF-8");

@@ -34,8 +34,8 @@ import com.google.appengine.api.users.UserServiceFactory;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-  private DatastoreService mDatastore = DatastoreServiceFactory.getDatastoreService();
-  private final ArrayList<String> mComments = new ArrayList<String>();;
+  private final DatastoreService mDatastore = DatastoreServiceFactory.getDatastoreService();
+  private final ArrayList<String> mComments = new ArrayList<String>();
   private final UserService mUserService = UserServiceFactory.getUserService();
 
   @Override

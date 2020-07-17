@@ -41,27 +41,29 @@ function addRandomGreeting() {
 }
 
 function initPage() {
-    fetch('/data').then(response => response.json()).then(arr => {
-        const dataContainer = document.getElementById('data-container');
-        arr.forEach(str => {
-            var comment = document.createElement('p');
-            comment.innerText = str;
-            dataContainer.appendChild(document.createElement('hr'));
-            dataContainer.appendChild(comment);
-        });
+  fetch('/data').then(response => response.json()).then(arr => {
+    const dataContainer = document.getElementById('data-container');
+    arr.forEach(str => {
+      var comment = document.createElement('p');
+      comment.innerText = str;
+      dataContainer.appendChild(document.createElement('hr'));
+      dataContainer.appendChild(comment);
     });
-    fetch('/user').then(response => response.json()).then(userStatus => {
-        const userContainer = document.getElementById('user-container');
-        if (userStatus.isUserLoggedIn) {
-            userContainer.innerHTML = '<span style="float:left;">username: ' + userStatus.userEmail + '</span>'
-                + '<span style="float:right;"><a href="' + userStatus.logoutUrl + '">logout</a></span>';
-        }
-        else {
-            userContainer.innerHTML = '<span style="float:left;">username: None</span>'
-                + '<span style="float:right;"><a href="' + userStatus.loginUrl + '">login</a></span>';
-        }
-    });
-    if (window.location.search == '?login') {
-        alert("Pleas login to leave comments.");
+  });
+  fetch('/user').then(response => response.json()).then(userStatus => {
+    const user_name = document.getElementById('user-name');
+    const login_logout = document.getElementById('login-logout');
+    if (userStatus.isUserLoggedIn) {
+      user_name.innerText = userStatus.userEmail;
+      login_logout.href = userStatus.logoutUrl;
+      login_logout.innerText = 'logout';
+    } else {
+      user_name.innerText = 'None';
+      login_logout.href = userStatus.loginUrl;
+      login_logout.innerText = 'login';
     }
+  });
+  if (window.location.search == '?login') {
+    alert("Please login to leave comments.");
+  }
 }
