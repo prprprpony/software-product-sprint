@@ -40,7 +40,7 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
-function getData() {
+function initPage() {
   fetch('/data').then(response => response.json()).then(arr => {
     const dataContainer = document.getElementById('data-container');
     arr.forEach(str => {
@@ -50,4 +50,20 @@ function getData() {
       dataContainer.appendChild(comment);
     });
   });
+  fetch('/user').then(response => response.json()).then(userStatus => {
+    const user_name = document.getElementById('user-name');
+    const login_logout = document.getElementById('login-logout');
+    if (userStatus.isUserLoggedIn) {
+      user_name.innerText = userStatus.userEmail;
+      login_logout.href = userStatus.logoutUrl;
+      login_logout.innerText = 'logout';
+    } else {
+      user_name.innerText = 'None';
+      login_logout.href = userStatus.loginUrl;
+      login_logout.innerText = 'login';
+    }
+  });
+  if (window.location.search == '?login') {
+    alert("Please login to leave comments.");
+  }
 }

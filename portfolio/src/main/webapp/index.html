@@ -7,7 +7,11 @@
     <script src="script.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">  
   </head>
-  <body onload="getData()">
+  <body onload="initPage()">
+    <div id="user-container">
+        <span style="float:left;">username: <b id="user-name"></b></span>
+        <span style="float:right;"><a id="login-logout"></a></span>
+    </div>
     <div id="content">
       <h1>Ji-Gui Zhang's Portfolio</h1>
       <p>This is my portfolio.</p>
@@ -41,9 +45,6 @@
         <input type="submit" />
       </form>
       <div id="data-container">Comments:</div>
-
-
-
     </div>
 
   </body>
